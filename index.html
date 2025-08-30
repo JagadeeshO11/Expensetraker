@@ -718,15 +718,6 @@
             const maxExpense = Math.max(...Object.values(expensesByCategory));
             const maxValue = maxExpense > 0 ? Math.ceil(maxExpense / 1000) * 1000 : 1000;
             
-            // Update Y-axis labels
-            const yAxis = document.getElementById('y-axis');
-            yAxis.innerHTML = '';
-            for (let i = 4; i >= 0; i--) {
-                const value = (maxValue / 4) * i;
-                const span = document.createElement('span');
-                span.textContent = formatCurrency(value);
-                yAxis.appendChild(span);
-            }
             
             // Update chart bars
             const chartWrapper = document.getElementById('chart-wrapper');
@@ -747,11 +738,6 @@
                 `;
                 
                 chartWrapper.appendChild(barEl);
-                
-                // Add x-axis label
-                const xLabel = document.createElement('span');
-                xLabel.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-                xAxis.appendChild(xLabel);
             }
         }
         
