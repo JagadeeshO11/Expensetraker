@@ -230,16 +230,6 @@
             min-width: 100%;
         }
 
-       
-
-        .chart-x-axis span {
-            font-size: 0.75rem;
-            text-align: center;
-            writing-mode: horizontal-tb;
-            transform: none;
-            width: 100%;
-        }
-
         .chart-bar {
             flex: 1;
             background: var(--primary);
@@ -289,11 +279,6 @@
             .chart-wrapper {
                 height: 180px;
                 gap: 6px;
-            }
-            
-            .chart-y-axis {
-                height: 180px;
-                font-size: 0.7rem;
             }
             
             .chart-bar {
@@ -477,12 +462,8 @@
             </div>
             
             <div class="chart-container" id="bar-chart">
-                
                 <div class="chart-wrapper" id="chart-wrapper">
                     <!-- Chart bars will be generated here -->
-                </div>
-                <div class="chart-x-axis" id="x-axis">
-                    <!-- X-axis labels will be generated here -->
                 </div>
             </div>
             
@@ -696,12 +677,9 @@
             const maxExpense = Math.max(...Object.values(expensesByCategory));
             const maxValue = maxExpense > 0 ? Math.ceil(maxExpense / 1000) * 1000 : 1000;
             
-            
             // Update chart bars
             const chartWrapper = document.getElementById('chart-wrapper');
-            const xAxis = document.getElementById('x-axis');
             chartWrapper.innerHTML = '';
-            xAxis.innerHTML = '';
             
             for (const [category, amount] of Object.entries(expensesByCategory)) {
                 const height = maxValue > 0 ? (amount / maxValue) * 100 : 0;
