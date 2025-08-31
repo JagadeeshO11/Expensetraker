@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --background: #f5f7ff;
+            --card-bg: #ffffff;
+            --text: #333333;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: var(--secondary);
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .settings-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .settings-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .switch-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .switch-label {
+            flex: 1;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: var(--secondary);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #d1146a;
+        }
+
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .theme-option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .theme-option:hover {
+            border-color: var(--primary);
+        }
+
+        .theme-option.active {
+            border-color: var(--primary);
+            background: #f0f5ff;
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .theme-light .theme-preview {
+            background: linear-gradient(to right, #4361ee, #f5f7ff);
+        }
+
+        .theme-dark .theme-preview {
+            background: linear-gradient(to right, #212529, #121416);
+        }
+
+        .theme-blue .theme-preview {
+            background: linear-gradient(to right, #4361ee, #4cc9f0);
+        }
+
+        .danger-zone {
+            background: #fff5f5;
+            border: 1px solid #ffcccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .danger-zone .section-title {
+            color: var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            .theme-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <h1>Settings</h1>
+        </div>
+
+        <div class="settings-container">
+            <div class="settings-section">
+                <h2 class="section-title"><i class="fas fa-user"></i> Account Settings</h2>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">New Password</label>
+                    <input type="password" id="password" placeholder="Enter new password">
+                </div>
+                
+                <button>Save Changes</button>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title"><i class="fas fa-paint-brush"></i> Appearance</h2>
+                
+                <div class="switch-container">
+                    <div class="switch-label">
+                        <strong>Dark Mode</strong>
+                        <p>Enable dark theme</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="switch-container">
+                    <div class="switch-label">
+                        <strong>Animations</strong>
+                        <p>Enable interface animations</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div>
+                    <label><strong>Color Theme</strong></label>
+                    <div class="theme-options">
+                        <div class="theme-option theme-light active">
+                            <div class="theme-preview"></div>
+                            <span>Light</span>
+                        </div>
+                        <div class="theme-option theme-dark">
+                            <div class="theme-preview"></div>
+                            <span>Dark</span>
+                        </div>
+                        <div class="theme-option theme-blue">
+                            <div class="theme-preview"></div>
+                            <span>Blue</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2 class="section-title"><i class="fas fa-bell"></i> Notifications</h2>
+                
+                <div class="switch-container">
+                    <div class="switch-label">
+                        <strong>Email Notifications</strong>
+                        <p>Receive email alerts</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="switch-container">
+                    <div class="switch-label">
+                        <strong>Expense Alerts</strong>
+                        <p>Get notified about large expenses</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="switch-container">
+                    <div class="switch-label">
+                        <strong>Budget Warnings</strong>
+                        <p>Alert when approaching budget limits</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="danger-zone">
+                <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i> Danger Zone</h2>
+                
+                <div class="form-group">
+                    <p>Delete all your data and account. This action cannot be undone.</p>
+                    <button class="btn-danger">Delete All Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme selection
+            const themeOptions = document.querySelectorAll('.theme-option');
+            
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    themeOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Here you would typically update the actual theme
+                    // For now, we'll just show an alert
+                    alert(`Theme changed to: ${this.querySelector('span').textContent}`);
+                });
+            });
+            
+            // Toggle switches
+            const switches = document.querySelectorAll('.switch input');
+            
+            switches.forEach(switchInput => {
+                switchInput.addEventListener('change', function() {
+                    const settingName = this.closest('.switch-container').querySelector('strong').textContent;
+                    const action = this.checked ? 'enabled' : 'disabled';
+                    console.log(`${settingName} ${action}`);
+                });
+            });
+            
+            // Save button
+            const saveButton = document.querySelector('.settings-section button');
+            if (saveButton) {
+                saveButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('Settings saved successfully!');
+                });
+            }
+            
+            // Delete button
+            const deleteButton = document.querySelector('.btn-danger');
+            if (deleteButton) {
+                deleteButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const confirmDelete = confirm('Are you sure you want to delete all your data? This action cannot be undone.');
+                    
+                    if (confirmDelete) {
+                        alert('All data has been deleted.');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

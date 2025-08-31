@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --background: #f5f7ff;
+            --card-bg: #ffffff;
+            --text: #333333;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: var(--secondary);
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-card.income {
+            border-top: 4px solid var(--success);
+        }
+
+        .summary-card.expenses {
+            border-top: 4px solid var(--danger);
+        }
+
+        .summary-card.balance {
+            border-top: 4px solid var(--primary);
+        }
+
+        .summary-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .summary-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background: var(--secondary);
+        }
+
+        .expense-list {
+            list-style: none;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+
+        .expense-item:hover {
+            background: #f9f9f9;
+        }
+
+        .expense-details {
+            flex: 1;
+        }
+
+        .expense-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .expense-category {
+            font-size: 0.85rem;
+            color: var(--gray);
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f0f0f0;
+        }
+
+        .expense-amount {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .expense-date {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .expense-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .delete-btn {
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            height: 300px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--gray);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <h1>Expense Tracker</h1>
+        </div>
+
+        <div class="summary-cards">
+            <div class="summary-card income">
+                <div class="summary-title">Total Income</div>
+                <div class="summary-value">₹0.00</div>
+            </div>
+            <div class="summary-card expenses">
+                <div class="summary-title">Total Expenses</div>
+                <div class="summary-value">₹0.00</div>
+            </div>
+            <div class="summary-card balance">
+                <div class="summary-title">Balance</div>
+                <div class="summary-value">₹0.00</div>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-plus-circle"></i> Add Transaction</h2>
+                <form id="expense-form">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" placeholder="Enter description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount (₹)</label>
+                        <input type="number" id="amount" placeholder="Enter amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select id="type" required>
+                            <option value="expense">Expense</option>
+                            <option value="income">Income</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="food">Food</option>
+                            <option value="transport">Transport</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <button type="submit">Add Transaction</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-list"></i> Recent Transactions</h2>
+                <ul class="expense-list" id="expense-list">
+                    <li class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <p>No transactions yet</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-chart-bar"></i> Expense Overview</h2>
+            <div class="chart-container">
+                Expense chart will be displayed here
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default
+            document.getElementById('date').valueAsDate = new Date();
+            
+            // Load transactions from localStorage
+            loadTransactions();
+            updateSummary();
+            
+            // Form submission handler
+            document.getElementById('expense-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const description = document.getElementById('description').value;
+                const amount = parseFloat(document.getElementById('amount').value);
+                const type = document.getElementById('type').value;
+                const category = document.getElementById('category').value;
+                const date = document.getElementById('date').value;
+                
+                addTransaction(description, amount, type, category, date);
+                
+                // Reset form
+                this.reset();
+                document.getElementById('date').valueAsDate = new Date();
+            });
+        });
+
+        function addTransaction(description, amount, type, category, date) {
+            const transaction = {
+                id: Date.now(),
+                description,
+                amount,
+                type,
+                category,
+                date
+            };
+            
+            let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            transactions.push(transaction);
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            
+            loadTransactions();
+            updateSummary();
+        }
+
+        function deleteTransaction(id) {
+            let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            transactions = transactions.filter(transaction => transaction.id !== id);
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            
+            loadTransactions();
+            updateSummary();
+        }
+
+        function loadTransactions() {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const expenseList = document.getElementById('expense-list');
+            
+            if (transactions.length === 0) {
+                expenseList.innerHTML = `
+                    <li class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <p>No transactions yet</p>
+                    </li>
+                `;
+                return;
+            }
+            
+            expenseList.innerHTML = '';
+            
+            // Sort transactions by date (newest first)
+            transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Show only last 10 transactions
+            transactions.slice(0, 10).forEach(transaction => {
+                const listItem = document.createElement('li');
+                listItem.className = 'expense-item';
+                
+                const formattedDate = new Date(transaction.date).toLocaleDateString();
+                const amountClass = transaction.type === 'income' ? 'income' : 'expense';
+                const amountSign = transaction.type === 'income' ? '+' : '-';
+                
+                listItem.innerHTML = `
+                    <div class="expense-details">
+                        <div class="expense-title">${transaction.description}</div>
+                        <div>
+                            <span class="expense-category">${transaction.category}</span>
+                            <span class="expense-date">${formattedDate}</span>
+                        </div>
+                    </div>
+                    <div class="expense-amount ${amountClass}">
+                        ${amountSign}₹${transaction.amount.toFixed(2)}
+                    </div>
+                    <div class="expense-actions">
+                        <i class="fas fa-trash delete-btn" onclick="deleteTransaction(${transaction.id})"></i>
+                    </div>
+                `;
+                
+                expenseList.appendChild(listItem);
+            });
+        }
+
+        function updateSummary() {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            
+            let totalIncome = 0;
+            let totalExpenses = 0;
+            
+            transactions.forEach(transaction => {
+                if (transaction.type === 'income') {
+                    totalIncome += transaction.amount;
+                } else {
+                    totalExpenses += transaction.amount;
+                }
+            });
+            
+            const balance = totalIncome - totalExpenses;
+            
+            document.querySelector('.income .summary-value').textContent = `₹${totalIncome.toFixed(2)}`;
+            document.querySelector('.expenses .summary-value').textContent = `₹${totalExpenses.toFixed(2)}`;
+            document.querySelector('.balance .summary-value').textContent = `₹${balance.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
