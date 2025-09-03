@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinnamart Delivery Partner - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #FF9800;
+            --accent: #F44336;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --card-bg: #ffffff;
+            --text: #333333;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .auth-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .auth-header {
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .auth-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .auth-header p {
+            opacity: 0.9;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: var(--primary-dark);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            color: white;
+            background: var(--primary);
+            font-weight: 600;
+        }
+
+        .auth-form {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .input-with-icon input {
+            padding-left: 45px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: var(--gray);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: #ddd;
+        }
+
+        .divider span {
+            padding: 0 10px;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .social-btn:hover {
+            background-color: #f9f9f9;
+        }
+
+        .social-btn i {
+            font-size: 1.2rem;
+        }
+
+        .google-btn {
+            color: #DB4437;
+        }
+
+        .facebook-btn {
+            color: #4267B2;
+        }
+
+        .error-message {
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .auth-card {
+                box-shadow: none;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <i class="fas fa-store"></i>
+                </div>
+                <h1>Chinnamart Delivery</h1>
+                <p>Partner Portal</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Login</div>
+                <div class="auth-tab" data-tab="signup">Sign Up</div>
+            </div>
+            
+            <!-- Login Form -->
+            <div class="auth-form">
+                <div class="form-section active" id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="login-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="error-message" id="login-email-error">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="login-password" placeholder="Enter your password" required>
+                        </div>
+                        <div class="error-message" id="login-password-error">Password is required</div>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <div class="remember">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="login-btn">Login to Dashboard</button>
+                    
+                    <div class="divider">
+                        <span>Or continue with</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <button class="social-btn google-btn">
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button class="social-btn facebook-btn">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Signup Form -->
+                <div class="form-section" id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="error-message" id="signup-name-error">Please enter your name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="signup-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="error-message" id="signup-email-error">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-phone">Phone Number</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="signup-phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="error-message" id="signup-phone-error">Please enter a valid phone number</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="signup-password" placeholder="Create a password" required>
+                        </div>
+                        <div class="error-message" id="signup-password-error">Password must be at least 6 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-confirm-password">Confirm Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="signup-confirm-password" placeholder="Confirm your password" required>
+                        </div>
+                        <div class="error-message" id="signup-confirm-password-error">Passwords do not match</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="remember">
+                            <input type="checkbox" id="terms">
+                            <label for="terms">I agree to the <a href="#" style="color: var(--primary);">Terms & Conditions</a></label>
+                        </div>
+                        <div class="error-message" id="terms-error">You must accept the terms</div>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="signup-btn">Create Account</button>
+                    
+                    <div class="divider">
+                        <span>Or sign up with</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <button class="social-btn google-btn">
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button class="social-btn facebook-btn">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const authTabs = document.querySelectorAll('.auth-tab');
+            const formSections = document.querySelectorAll('.form-section');
+            
+            authTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    authTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding form
+                    formSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === `${tabId}-form`) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Login functionality
+            const loginBtn = document.getElementById('login-btn');
+            const loginEmail = document.getElementById('login-email');
+            const loginPassword = document.getElementById('login-password');
+            const loginEmailError = document.getElementById('login-email-error');
+            const loginPasswordError = document.getElementById('login-password-error');
+            
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                
+                // Validate email
+                if (!loginEmail.value || !isValidEmail(loginEmail.value)) {
+                    loginEmailError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    loginEmailError.style.display = 'none';
+                }
+                
+                // Validate password
+                if (!loginPassword.value) {
+                    loginPasswordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    loginPasswordError.style.display = 'none';
+                }
+                
+                // If valid, proceed to login
+                if (isValid) {
+                    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+                    loginBtn.disabled = true;
+                    
+                    // Simulate API call delay
+                    setTimeout(function() {
+                        // Redirect to partner dashboard
+                        window.location.href = 'partnerdashboard.html';
+                    }, 1500);
+                }
+            });
+            
+            // Signup functionality
+            const signupBtn = document.getElementById('signup-btn');
+            const signupName = document.getElementById('signup-name');
+            const signupEmail = document.getElementById('signup-email');
+            const signupPhone = document.getElementById('signup-phone');
+            const signupPassword = document.getElementById('signup-password');
+            const signupConfirmPassword = document.getElementById('signup-confirm-password');
+            const terms = document.getElementById('terms');
+            
+            const signupNameError = document.getElementById('signup-name-error');
+            const signupEmailError = document.getElementById('signup-email-error');
+            const signupPhoneError = document.getElementById('signup-phone-error');
+            const signupPasswordError = document.getElementById('signup-password-error');
+            const signupConfirmPasswordError = document.getElementById('signup-confirm-password-error');
+            const termsError = document.getElementById('terms-error');
+            
+            signupBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                
+                // Validate name
+                if (!signupName.value) {
+                    signupNameError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    signupNameError.style.display = 'none';
+                }
+                
+                // Validate email
+                if (!signupEmail.value || !isValidEmail(signupEmail.value)) {
+                    signupEmailError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    signupEmailError.style.display = 'none';
+                }
+                
+                // Validate phone
+                if (!signupPhone.value || signupPhone.value.length < 10) {
+                    signupPhoneError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    signupPhoneError.style.display = 'none';
+                }
+                
+                // Validate password
+                if (!signupPassword.value || signupPassword.value.length < 6) {
+                    signupPasswordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    signupPasswordError.style.display = 'none';
+                }
+                
+                // Validate confirm password
+                if (signupPassword.value !== signupConfirmPassword.value) {
+                    signupConfirmPasswordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    signupConfirmPasswordError.style.display = 'none';
+                }
+                
+                // Validate terms
+                if (!terms.checked) {
+                    termsError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    termsError.style.display = 'none';
+                }
+                
+                // If valid, proceed to signup
+                if (isValid) {
+                    signupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+                    signupBtn.disabled = true;
+                    
+                    // Simulate API call delay
+                    setTimeout(function() {
+                        alert('Account created successfully! You can now login.');
+                        
+                        // Switch to login tab
+                        authTabs[0].click();
+                        
+                        // Pre-fill email field
+                        loginEmail.value = signupEmail.value;
+                        
+                        // Reset signup button
+                        signupBtn.innerHTML = 'Create Account';
+                        signupBtn.disabled = false;
+                    }, 2000);
+                }
+            });
+            
+            // Email validation function
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+        });
+    </script>
+</body>
+</html>
